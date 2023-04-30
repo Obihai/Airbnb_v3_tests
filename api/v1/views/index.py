@@ -16,10 +16,12 @@ from models.review import Review
 classes = {'states': State, 'cities': City, 'places': Place, 'users': User,
            'amenities': Amenity, 'reviews': Review}
 
+
 @app_views.route('/status')
 def index_page():
     """ returns status of api """
     return jsonify({'status': 'OK'})
+
 
 @app_views.route('/stats')
 def data_stats():
