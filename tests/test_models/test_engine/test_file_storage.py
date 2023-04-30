@@ -118,7 +118,6 @@ class TestFileStorage(unittest.TestCase):
 
     def test_count(self):
         """Test that count method returns accurate count of objects"""
-        storage = FileStorage()
         # clear objects from storage
         FileStorage._FileStorage__objects.clear()
         storage.save()
@@ -132,11 +131,10 @@ class TestFileStorage(unittest.TestCase):
 
     def test_get(self):
         """Test that get method returns object by valid id"""
-        storage = FileStorage()
         storage.save()
         # create new object
         state = State()
         storage.new(state)
-        state_id = state.to_dict()['id']
+        state_id = state.id
         self.assertTrue(storage.get(State, state_id) is state)
         self.assertIsNone(storage.get(None, state_id))

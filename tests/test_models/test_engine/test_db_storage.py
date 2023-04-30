@@ -6,6 +6,7 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 from datetime import datetime
 import inspect
 import models
+from models import storage
 from models.engine import db_storage
 from models.engine.file_storage import FileStorage
 from models.amenity import Amenity
@@ -101,15 +102,15 @@ class TestFileStorage(unittest.TestCase):
     def test_count(self):
         """Test that count method returns an accurate count of objects"""
         user1 = User(email="test1@user.com", password="123")
-        self.storage.new(user1)
-        self.storage.save()
-        count_users = self.storage.count(User)
-        count_states = self.storage.count(State)
+        storage.new(user1)
+        storage.save()
+        count_users = storage.count(User)
+        count_states = storage.count(State)
         self.assertEqual(count_users, 1)
         self.assertEqual(count_states, 0)
-        self.storage.delete(user1)
-        count_users = self.storage.count(User)
-        count_states = self.storage.count(State)
+        storage.delete(user1)
+        count_users = storage.count(User)
+        count_states = storage.count(State)
         self.assertEqual(count_users, 0)
         self.assertEqual(count_states, 0)
 
@@ -117,19 +118,19 @@ class TestFileStorage(unittest.TestCase):
         """Test that get method returns object by valid id"""
         user = User(email="test@user.com", password="123")
         state = State(name="Test State")
-        self.storage.new(user)
-        self.storage.new(state)
-        self.storage.save()
+        storage.new(user)
+        storage.new(state)
+        storage.save()
         user_id = user.id
         state_id = state.id
         # Test getting objects by valid ids
-        user_obj = self.storage.get(User, user_id)
-        state_obj = self.storage.get(State, state_id)
+        user_obj = storage.get(User, user_id)
+        state_obj = storage.get(State, state_id)
         self.assertEqual(user_obj.id, user_id)
         self.assertEqual(state_obj.id, state_id)
         # Test getting object by invalid id
         invalid_id = "invalid_id"
-        self.assertIsNone(self.storage.get(User, invalid_id))
-        self.assertIsNone(self.storage.get(State, invalid_id))
-        self.storage.delete(user)
-        self.storage.delete(state)
+        self.assertIsNone(storage.get(User, invalid_id))
+        self.assertIsNone(storage.get(State, invalid_id))
+        storage.delete(user)
+        storage.delete(state)
